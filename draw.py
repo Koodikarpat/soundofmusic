@@ -2,7 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 from random import random, choice, randint
-import math
+from math import sin, radians
 
 
 pygame.init()
@@ -20,7 +20,7 @@ COLORS = []
 INDEX = 0
 
 infoObject = pygame.display.Info()
-FPS = 30
+FPS = 60
 WIDTH = infoObject.current_w
 HEIGHT = infoObject.current_h
 fpsClock = pygame.time.Clock()
@@ -56,13 +56,11 @@ def intColor(arvo):
     return (r, g, b)
 
 def sinebow(h):
-	h += 1/float(2)
-	h *= -1
-	r = math.sin(math.radians(math.pi * h))
 
-	g = math.sin(math.radians(math.pi * (h + 20)))
-	b = math.sin(math.radians(math.pi * (h + 45)))
-	return (int(255.0*r**2.0), int(255.0*g**2.0), int(255.0*b**2.0))
+    r = sin(radians(h))*int(225/2.0) + 225/2.0
+    g = sin(radians(h + 120))*int(225/2.0) + 225/2.0
+    b = sin(radians(h + 240))*int(225/2.0) + 225/2.0
+    return (r,g,b)
 
 allC = 0
 while True:
@@ -71,39 +69,8 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-    """if DIRECTION == 1:
-        if R < 255:
-            R += cJump
-        elif G < 255:
-            G += cJump
-        elif B < 255:
-            B += cJump
-        else:
-            DIRECTION = 0
-    else:
-            if R > 0:
-                R -= cJump
-            elif G > 0:
-                G -= cJump
-            elif B > 0:
-                B -= cJump
-            else:
-                DIRECTION = 1
-    if R > 255:
-        R = 255
-    elif R < 0:
-        R = 0
-    elif G > 255:
-        G = 255
-    elif G < 0:
-        G = 0
-    elif B > 255:
-        B = 255
-    elif B < 0:
-        B = 0
-        """
     new_color = sinebow(H)
-    H = (H+1)%360
+    H = (H+4)%360
     COLORS = COLORS[1:] + [new_color]
     INDEX = 0
 
