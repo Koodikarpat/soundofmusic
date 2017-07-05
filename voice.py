@@ -1,8 +1,8 @@
 from typing import Union
-from os import path
 import collections
 import audioop
 import sys
+import os
 
 from pocketsphinx import Decoder
 from fuzzywuzzy import process
@@ -28,9 +28,9 @@ class VoiceDetector:
         self.rate = rate
 
         config = Decoder.default_config()
-        config.set_string('-hmm', path.join(self.model_dir, 'en-us/en-us'))
-        config.set_string('-lm', path.join(self.model_dir, 'en-us/en-us.lm.bin'))
-        config.set_string('-dict', path.join(self.model_dir, 'en-us/cmudict-en-us.dict'))
+        config.set_string('-hmm', os.path.join(self.model_dir, 'en-us/en-us'))
+        config.set_string('-lm', os.path.join(self.model_dir, 'en-us/en-us.lm.bin'))
+        config.set_string('-dict', os.path.join(self.model_dir, 'en-us/cmudict-en-us.dict'))
         location = 'NUL' if sys.platform.startswith('win') else '/dev/null'
         config.set_string('-logfn', location)
         self.decoder = Decoder(config)
@@ -55,7 +55,7 @@ class VoiceDetector:
         # threshold is the average of 1/5 of the loudest samples
         values = sorted([abs(audioop.avg(self.stream.read(self.chunk), 4)) ** 0.5 for _ in range(samples)], reverse=True)
         valid = slice(None, int(samples * 0.2))
-        threshold = max(700, int(sum(values[valid]) / (samples * 0.2)) + 100)
+        threshold = max(1000, int(sum(values[valid]) / (samples * 0.2)) + 100)
 
         print('Threshold set at: {}'.format(threshold))
         return threshold
@@ -91,6 +91,7 @@ class VoiceDetector:
             self.buffer.clear()
 
             if command:
+                print(command)
                 self.invoke(command)
 
     def run(self):
@@ -110,10 +111,11 @@ class VoiceDetector:
         commands[closest_command](args)
 
     def play(self, args: list):
-        if not path.isdir('songs'):
+        if not os.path.exists('songs'):
+            print("lahslkjg sjkdgh lkasdglku")
             return
 
-        songs = path.listdir('songs')
+        songs = os.path.listdir('songs')
         name = ' '.join(args)
 
         best_match = process.extractOne(name, songs)
