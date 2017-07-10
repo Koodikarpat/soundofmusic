@@ -142,17 +142,28 @@ def main():
         drawpoint2[1] += velocity2[1]
 
         if drawpoint1[0] <= 0 or drawpoint1[0] >= WIDTH:
-            velocity1[0] = (velocity1[0]/velocity1[0])*(random.random()*(-2))
+            if velocity1[0] < 0:
+                velocity1[0] = (velocity1[0]/velocity1[0])*(random.random()*5)
+            else:
+                velocity1[0] = (velocity1[0]/velocity1[0])*(random.random()*5)*-1
 
         if drawpoint1[1] <= 0 or drawpoint1[1] >= HEIGHT:
-            velocity1[1] = (velocity1[1]/velocity1[1])*(random.random()*(-2))
+            if velocity1[1] < 0:
+                velocity1[1] = (velocity1[1]/velocity1[1])*(random.random()*5)
+            else:
+                velocity1[1] = (velocity1[1]/velocity1[1])*(random.random()*5)*-1
 
         if drawpoint2[0] <= 0 or drawpoint2[0] >= WIDTH:
-            velocity2[0] = (velocity2[0]/velocity2[0])*(random.random()*(-2))
+            if velocity2[0] < 0:
+                velocity2[0] = (velocity2[0]/velocity2[0])*(random.random()*2)
+            else:
+                velocity2[0] = (velocity2[0]/velocity2[0])*(random.random()*2)*-1
 
         if drawpoint2[1] <= 0 or drawpoint2[1] >= HEIGHT:
-            velocity2[1] = (velocity2[1]/velocity2[1])*(random.random()*(-2))
-
+            if velocity2[1] < 0:
+                velocity2[1] = (velocity2[1]/velocity2[1])*(random.random()*2)
+            else:
+                velocity2[1] = (velocity2[1]/velocity2[1])*(random.random()*2)*-1
         glUniform1f(glGetUniformLocation(shader, "phase"), PHASE)
         glUniform1f(glGetUniformLocation(shader, "pointX"), drawpoint1[0])
         glUniform1f(glGetUniformLocation(shader, "pointY"), drawpoint1[1])
